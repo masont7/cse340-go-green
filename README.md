@@ -64,8 +64,8 @@ The Emission Factor data structure (found in the `./lib/models/emission_factors/
 Most non-abstract emission factors (found in the `./lib/models/emission_factors/base_emission_factors/` folder) are subclasses of `MoneyEmissionFactor`s or `WeightEmissionFactor`s because they don't need to track any other data. However, some emission factors use `EmissionFactor` as their direct super class because they require a different combination of data. The full list is below:
 - `EmissionFactor`s:
     - `ClothingEmissions` - calculates some clothing emissions based on money and calculates other clothing emissions based on weight.
-    - `EnergyEmissions` - calculates emissions based on volume. This is the only 
-    -`TravelEmissions` - calculates emissions based on distance and number of passengers
+    - `EnergyEmissions` - calculates emissions based on volume
+    - `TravelEmissions` - calculates emissions based on distance and number of passengers
 - `MoneyEmissionFactor`s (all factors are calculated based on money alone)
     - `FoodEmissions`
     - `FurnitureEmissions`
