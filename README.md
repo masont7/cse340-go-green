@@ -78,7 +78,7 @@ Most non-abstract emission factors (found in the `./lib/models/emission_factors/
 By creating any of the non-abstract subclasses of `EmissionFactor`, we have all the data we need to send to the API.
 
 ### Other Emissions Data
-In the `./lib/models/emission_data/` folder, there are 2 extra files that are used to help with API calls. 
+In the `./lib/models/emission_data/` folder, there are 2 extra files that are used to help with API calls and displaying options to the user. 
 - `emission_data_enums.dart` contains several helper enums that are used to display dropdown lists of options to the user. `EmissionCategory` represents all of the available emission categories, `MoneyUnit` represents the available currency types, `WeightUnit` represents the available units of measurement for weight, and `DistanceUnit` represents the available units of measurement for distance.
 - `emission_subtypes.dart` contains several Maps to represent the available subtypes for each emission category. Maps are used here because each subtype requires a 'friendly name' to display to the user, like 'Beef', and an id to send to the API, like 'consumer_goods-type_meat_products_beef'. This greatly reduced the number of switch statements and named constructors with reused code that I had to write when creating the subclasses of `EmissionFactor`.
 
