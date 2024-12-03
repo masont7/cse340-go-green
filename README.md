@@ -2,7 +2,7 @@
 GoGreen is an app that allows users to track their carbon emissions based on activities and purchases they make during a day. It also displays recycling centers and second hand store locations in the Seattle Area which can be used to dispose of goods in a more sustainable fashion. 
 
 # Data Design & Data Flow
-There are two main parts of this app that store different data for the user: the activity log and the map. We also use a custom data structure called an Emission Factor to send the user's data to the Climatiq API to calculate their carbon emissions. 
+There are two main parts of this app that store different data for the user: the map and the activity log. We also use a custom data structure called an Emission Factor to send the user's data to the Climatiq API to calculate their carbon emissions. 
 
 ## Displaying Recycling Centers to the User
 We have a custom database of recycling centers and second-hand stores that we use to show the user nearby locations where they can dispose of goods in a more sustainable fashion. Currently, only locations in Seattle are supported.
@@ -42,12 +42,18 @@ This view also keeps track of all of the information stored in an Entry so that 
 ## Sending and retreving data from the Climatiq API
 We created a data structure called an EmissionFactor to send data to the Climatiq API, and a data structure called an EmissionEstimate to retrieve data from the API.
 
-### Emission Factors
-Emission Factors (found in the `./lib/models/emission_factors` folder) keep track of all of the data that the API needs to be able to estimate an activity's carbon emissions. There are 3 abstract super classes that all Emission Factors are built from: `EmissionFactor`, `MoneyEmissionFactor`, and `WeightEmissionFactor`.
+### Sending Data: Emission Factors
+In general, Climatiq requires the following information to be sent to its servers before it can send data back:
+- An ID that tells it what type of emissions it's calculating. Each activity's id is found in the API docs, not determined by us
+- A Data Version that that tells Climatiq what version of their database's data to use for calculations
+- One or more amounts, usually represented by doubles, that tells Climatiq how much/often/many of that activity to calculate
+- Units of measurement for those amounts. This varies depending on the amount type.
+
+The Emission Factor data structure (found in the `./lib/models/emission_factors` folder) keeps track of all of the data that the API needs to be able to estimate an activity's carbon emissions. There are 3 abstract super classes that all Emission Factors are built from: `EmissionFactor`, `MoneyEmissionFactor`, and `WeightEmissionFactor`.
 - `EmissionFactor`is an abstract super class for all Emission Factors. It keeps track of: 
-    - `String` to represent an activity's id (each activity's id is found in the API docs, not determined by us)
-    - `int` to represent the data version (an integer that tells the API what data calculation to use behind the scenes)
-    - `EmissionCategory`: an enum to represent the overall category of emissions.
+    - `String` to represent an activity's id
+    - `int` to represent the data version
+    - `EmissionCategory`: an enum to represent the overall category of emissions (this is not sent to Climatiq. It's used to make tracking a user's emission types easier).
 - `MoneyEmissionFactor` is an abstract class that extends EmissionFactor. It is used for any Emission Factors that use only money to calculate their emissions. It keeps track of:
     - `double` to represent the amount of money spent
     - `MoneyUnit`: an enum to represent the type of currency (USD, EUR, etc.)
@@ -74,9 +80,9 @@ By creating any of the non-abstract subclasses of `EmissionFactor`, we have all 
 ### Other Emissions Data
 In the `./lib/models/emission_data/` folder, there are 2 extra files that are used to help with API calls. 
 - `emission_data_enums.dart` contains several helper enums that are used to display dropdown lists of options to the user. `EmissionCategory` represents all of the available emission categories, `MoneyUnit` represents the available currency types, `WeightUnit` represents the available units of measurement for weight, and `DistanceUnit` represents the available units of measurement for distance.
-- `emission_subtypes.dart` contains several Maps to represent the available subtypes for each emission category. Maps are used here because each subtype requires a 'friendly name' to display to the user, like 'Beef', and an id to send to the API, like 'consumer_goods-type_meat_products_beef'. This greatly reduced the number of switch statements and named constructors with reused code that I had to use when creating the subclasses of `EmissionFactor`.
+- `emission_subtypes.dart` contains several Maps to represent the available subtypes for each emission category. Maps are used here because each subtype requires a 'friendly name' to display to the user, like 'Beef', and an id to send to the API, like 'consumer_goods-type_meat_products_beef'. This greatly reduced the number of switch statements and named constructors with reused code that I had to write when creating the subclasses of `EmissionFactor`.
 
-### Emission Estimate
+### Retrieving Data: Emission Estimate
 Emission Estimates (found at `./lib/climatiq_api/emission_estimate`) are the objects created from the JSON data returned from the API. Each emission estimate keeps track of:
 - `double` to represent the amount of co2 emissions
 - `String` to represent the units of measurement for the co2 emissions. With the current implementation of calling the API, this will always be kg. This was left as a field rather than a constant in case of bugs or a need to change the implementation.
