@@ -1,16 +1,5 @@
-# go_green
+# GoGreen
+GoGreen is an app that allows users to track their carbon emissions based on activities and purchases they make during a day. It also displays recycling centers and second hand store locations in the Seattle Area which can be used to dispose of goods in a more sustainable fashion. 
 
-A new Flutter project.
+## Data Design & Data Flow
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
