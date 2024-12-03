@@ -2,9 +2,9 @@
 GoGreen is an app that allows users to track their carbon emissions based on activities and purchases they make during a day. It also displays recycling centers and second hand store locations in the Seattle Area which can be used to dispose of goods in a more sustainable fashion. 
 
 # Data Design & Data Flow
-There are two main parts of this app that store different data for the user: the map and the activity log. We also use a custom data structure called an Emission Factor to send the user's data to the Climatiq API to calculate their carbon emissions. 
+There are two main parts of this app that store different data for the user: the map and the activity log. We also use a custom data structure called an Emission Factor to send the user's data to the Climatiq API to calculate their carbon emissions. All of this is explained in more detail below.
 
-## Displaying Recycling Centers to the User
+## The Map: Displaying Recycling Centers to the User
 We have a custom database of recycling centers and second-hand stores that we use to show the user nearby locations where they can dispose of goods in a more sustainable fashion. Currently, only locations in Seattle are supported.
 
 ### Recycling Center
@@ -18,7 +18,7 @@ The Recycling Center Database (found at `./lib/models/recycling_center_db.dart`)
 ### Map View
 The Map View (found at `./lib/views/map_view.dart`) shows users where they are on the map by getting their current location via the Geolocator package, and it uses the Recycling Center Database to show any nearby locations. The user's position is updated with a PositionProvider so that the user can see themselves move on the map in real time.
 
-## Displaying Emissions Data to the User
+## The Activity Log: Displaying Emissions Data to the User
 The user's emissions data is stored similarly to a journal. They have entries and an activity history. These are displayed directly to the user in the ActivityLogView page of the app.
 
 ### Entry
