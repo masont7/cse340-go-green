@@ -39,3 +39,44 @@ The Activity Log View (found at `./lib/views/activity_log_view.dart`) displays t
 The Entry View (found at `./lib/views/entry_view.dart`) allows the user to input information about an activity. This sends an Emission Factor object to the Climatiq API and returns an estimate of the carbon emissions associated with that activity. 
 This view also keeps track of all of the information stored in an Entry so that the user can return to, view, and edit any previous activities that they entered.
 
+## Sending and retreving data from the Climatiq API
+We created a data structure called an EmissionFactor to send data to the Climatiq API, and a data structure called an EmissionEstimate to retrieve data from the API.
+
+### Emission Factors
+Emission Factors (found in the `./lib/models/emission_factors` folder) keep track of all of the data that the API needs to be able to estimate an activity's carbon emissions. There are 3 abstract super classes that all Emission Factors are built from: `EmissionFactor`, `MoneyEmissionFactor`, and `WeightEmissionFactor`.
+- `EmissionFactor`is an abstract super class for all Emission Factors. It keeps track of: 
+    - `String` to represent an activity's id (each activity's id is found in the API docs, not determined by us)
+    - `int` to represent the data version (an integer that tells the API what data calculation to use behind the scenes)
+    - `EmissionCategory`: an enum to represent the overall category of emissions.
+- `MoneyEmissionFactor` is an abstract class that extends EmissionFactor. It is used for any Emission Factors that use only money to calculate their emissions. It keeps track of:
+    - `double` to represent the amount of money spent
+    - `MoneyUnit`: an enum to represent the type of currency (USD, EUR, etc.)
+- `WeightEmissionFactor` is an abstract class that extends EmissionFactor. It is used for any Emission Factors that use only weight to calculate their emissions. It keeps track of:
+    - `weight` to represent the amount of money spent
+    - `WeightUnit`: an enum to represent the units of measurement for the weight (lb, g, ton, etc.)
+
+Most emission factors are subclasses of `MoneyEmissionFactor`s or `WeightEmissionFactor`s because they don't need to track any other data. However, some emission factors use `EmissionFactor` as their direct super class because they require a different combination of data. The full list is below:
+- `EmissionFactor`s:
+    - `ClothingEmissions` - calculates some clothing emissions based on money and calculates other clothing emissions based on weight.
+    - `EnergyEmissions` - calculates emissions based on volume. This is the only 
+    -`TravelEmissions` - calculates emissions based on distance and number of passengers
+- `MoneyEmissionFactor`s (all factors are calculated based on money alone)
+    - `FoodEmissions`
+    - `FurnitureEmissions`
+    - `PersonalCareEmissions`
+- `WeightEmissionFactor`s (all factors are calculated based on weight alone)
+    - `FoodWasteEmissions`
+    - `GeneralWasteEmissions`
+    - `ElectricalWasteEmissions`
+
+By creating any of the non-abstract subclasses of `EmissionFactor`, we have all the data we need to send to the API.
+
+### Other Emissions Data
+In the `./lib/models/emission_data/` folder, there are 2 extra files that are used to help with API calls. 
+- `emission_data_enums.dart` contains several helper enums that are used to display dropdown lists of options to the user. `EmissionCategory` represents all of the available emission categories, `MoneyUnit` represents the available currency types, `WeightUnit` represents the available units of measurement for weight, and `DistanceUnit` represents the available units of measurement for distance.
+- `emission_subtypes.dart` contains several Maps to represent the available subtypes for each emission category. Maps are used here because each subtype requires a 'friendly name' to display to the user, like 'Beef', and an id to send to the API, like 'consumer_goods-type_meat_products_beef'. This greatly reduced the number of switch statements and named constructors with reused code that I had to use when creating the subclasses of `EmissionFactor`.
+
+### Emission Estimate
+Emission Estimates (found at `./lib/climatiq_api/emission_estimate`) are the objects created from the JSON data returned from the API. Each emission estimate keeps track of:
+- `double` to represent the amount of co2 emissions
+- `String` to represent the units of measurement for the co2 emissions. With the current implementation of calling the API, this will always be kg. This was left as a field rather than a constant in case of bugs or a need to change the implementation.
