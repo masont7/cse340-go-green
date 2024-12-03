@@ -49,7 +49,7 @@ In general, Climatiq requires the following information to be sent to its server
 - One or more amounts, usually represented by doubles, that tells Climatiq how much/often/many of that activity to calculate
 - Units of measurement for those amounts. This varies depending on the amount type.
 
-The Emission Factor data structure (found in the `./lib/models/emission_factors` folder) keeps track of all of the data that the API needs to be able to estimate an activity's carbon emissions. There are 3 abstract super classes that all Emission Factors are built from: `EmissionFactor`, `MoneyEmissionFactor`, and `WeightEmissionFactor`.
+The Emission Factor data structure (found in the `./lib/models/emission_factors/base_emission_factors/` folder) keeps track of all of the data that the API needs to be able to estimate an activity's carbon emissions. There are 3 abstract super classes that all Emission Factors are built from: `EmissionFactor`, `MoneyEmissionFactor`, and `WeightEmissionFactor`.
 - `EmissionFactor`is an abstract super class for all Emission Factors. It keeps track of: 
     - `String` to represent an activity's id
     - `int` to represent the data version
@@ -61,7 +61,7 @@ The Emission Factor data structure (found in the `./lib/models/emission_factors`
     - `weight` to represent the amount of money spent
     - `WeightUnit`: an enum to represent the units of measurement for the weight (lb, g, ton, etc.)
 
-Most emission factors are subclasses of `MoneyEmissionFactor`s or `WeightEmissionFactor`s because they don't need to track any other data. However, some emission factors use `EmissionFactor` as their direct super class because they require a different combination of data. The full list is below:
+Most non-abstract emission factors (found in the `./lib/models/emission_factors/base_emission_factors/` folder) are subclasses of `MoneyEmissionFactor`s or `WeightEmissionFactor`s because they don't need to track any other data. However, some emission factors use `EmissionFactor` as their direct super class because they require a different combination of data. The full list is below:
 - `EmissionFactor`s:
     - `ClothingEmissions` - calculates some clothing emissions based on money and calculates other clothing emissions based on weight.
     - `EnergyEmissions` - calculates emissions based on volume. This is the only 
