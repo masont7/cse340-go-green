@@ -2,10 +2,9 @@ import 'package:go_green/models/emission_data/emission_data_enums.dart';
 import 'package:go_green/models/emission_data/emission_subtypes.dart';
 import 'package:go_green/models/emission_factors/base_emission_factors/weight_emission_factor.dart';
 
-
-/// Represents emissions from food waste
+/// Represents emissions from electrical waste
 class ElectricalWasteEmissions extends WeightEmissionFactor {
-  /// The type of food waste
+  /// The type of electrical waste
   final String electricalWasteType;
 
   /// Creates an Emission Factor for furniture.
@@ -13,8 +12,7 @@ class ElectricalWasteEmissions extends WeightEmissionFactor {
   /// Parameters:
   ///  - weight: the weight of the emission factor
   ///  - weightUnit: the units of measurement for the weight
-  ///  - foodType: the type of food waste
-  ///  - recycled: whether this waste was recycled. Set to false if landfilled.
+  ///  - electricalWasteType: the type of food waste
   ElectricalWasteEmissions({
     required super.weight, 
     required super.weightUnit,

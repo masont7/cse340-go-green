@@ -4,7 +4,7 @@ import 'package:go_green/models/emission_data/emission_data_enums.dart';
 
 /// Represents emissions from food, beverage, and tobacco.
 class FoodEmissions extends MoneyEmissionFactor {
-  /// The type of food
+  /// The type of food/beverage/tobacco
   final String foodType;
 
   /// Creates an Emission Factor for food, beverage, or tobacco.

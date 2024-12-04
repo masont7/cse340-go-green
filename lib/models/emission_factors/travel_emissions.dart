@@ -14,8 +14,13 @@ class TravelEmissions extends EmissionFactor{
   final String travelType;
   
   
-  /// API Reference: https://www.climatiq.io/data/activity/passenger_vehicle-vehicle_type_car-fuel_source_bio_petrol-distance_na-engine_size_medium
-  /// Note: this is currently for medium sized cars only
+  // API Reference: https://www.climatiq.io/data/activity/passenger_vehicle-vehicle_type_car-fuel_source_bio_petrol-distance_na-engine_size_medium
+  /// Creates an emission factor for gas car travel.
+  /// 
+  /// Parameters:
+  ///  - distance: the distance traveled
+  ///  - distanceUnit: the units of measurement for distance
+  ///  - passengers: the number of people in the car
   TravelEmissions.gasCar({
     required this.distance, 
     required this.distanceUnit,
@@ -24,8 +29,13 @@ class TravelEmissions extends EmissionFactor{
       super(category: EmissionCategory.travel,
           id: EmissionSubtypes().travelTypes['Gas Car'] ?? 'type not found');
 
-  /// API Reference: https://www.climatiq.io/data/activity/passenger_vehicle-vehicle_type_car-fuel_source_bev-distance_na-engine_size_na
-  /// Note: this is currently for medium sized cars only
+  // API Reference: https://www.climatiq.io/data/activity/passenger_vehicle-vehicle_type_car-fuel_source_bev-distance_na-engine_size_na
+  /// Creates an emission factor for electric car travel.
+  /// 
+  /// Parameters:
+  ///  - distance: the distance traveled
+  ///  - distanceUnit: the units of measurement for distance
+  ///  - passengers: the number of people in the car
   TravelEmissions.electricCar({
     required this.distance, 
     required this.distanceUnit,
@@ -34,7 +44,12 @@ class TravelEmissions extends EmissionFactor{
       super(category: EmissionCategory.travel,
           id: EmissionSubtypes().travelTypes['Electric Car'] ?? 'type not found');
 
-  /// API Referece: https://www.climatiq.io/data/activity/passenger_vehicle-vehicle_type_car-fuel_source_phev-engine_size_na-vehicle_age_na-vehicle_weight_na
+  // API Referece: https://www.climatiq.io/data/activity/passenger_vehicle-vehicle_type_car-fuel_source_phev-engine_size_na-vehicle_age_na-vehicle_weight_na
+  /// Creates an emission factor for hybrid car travel.
+  /// 
+  /// Parameters:
+  ///  - distance: the distance traveled
+  ///  - distanceUnit: the units of measurement for distance
   TravelEmissions.hybridCar({
     required this.distance, 
     required this.distanceUnit,
@@ -49,6 +64,7 @@ class TravelEmissions extends EmissionFactor{
   /// Parameters:
   ///  - distance: the distance traveled
   ///  - distanceUnit: the units of measurement for distance
+  ///  - passengerAmt: an estimate of how full the bus was
   TravelEmissions.bus({
     required this.distance, 
     required this.distanceUnit,
@@ -65,9 +81,17 @@ class TravelEmissions extends EmissionFactor{
         super(category: EmissionCategory.travel,
           id: EmissionSubtypes().travelTypes['Bus'] ?? 'type not found');
 
-  /// API Reference: 
-  ///  - Domestic: https://www.climatiq.io/data/activity/passenger_flight-route_type_domestic-aircraft_type_na-distance_na-class_na-rf_included-distance_uplift_included
-  ///  - International: https://www.climatiq.io/data/activity/passenger_flight-route_type_international-aircraft_type_na-distance_long_haul_gt_3700km-class_economy-rf_included-distance_uplift_included
+  // API Reference: 
+  //  - Domestic: https://www.climatiq.io/data/activity/passenger_flight-route_type_domestic-aircraft_type_na-distance_na-class_na-rf_included-distance_uplift_included
+  //  - International: https://www.climatiq.io/data/activity/passenger_flight-route_type_international-aircraft_type_na-distance_long_haul_gt_3700km-class_economy-rf_included-distance_uplift_included
+  /// Creates an emission factor for plane travel.
+  /// 
+  /// Parameters:
+  ///  - distance: the distance traveled
+  ///  - distanceUnit: the units of measurement for distance
+  ///  - size: the size of the plane
+  ///  - passengerAmt: an estimate of how full the plane was
+  ///  - isDomestic: whether the flight was a domestic or international flight
   TravelEmissions.flight({
     required this.distance, 
     required this.distanceUnit,
@@ -117,7 +141,13 @@ class TravelEmissions extends EmissionFactor{
       super(category: EmissionCategory.travel,
             id: EmissionSubtypes().travelTypes[isDomestic ? 'Domestic Flight' : 'International Flight'] ?? 'type not found');
 
-  /// API Reference: https://www.climatiq.io/data/activity/passenger_train-route_type_light_rail_and_tram-fuel_source_na
+  // API Reference: https://www.climatiq.io/data/activity/passenger_train-route_type_light_rail_and_tram-fuel_source_na
+  /// Creates an emission factor for light rail or tram travel.
+  /// 
+  /// Parameters:
+  ///  - distance: the distance traveled
+  ///  - distanceUnit: the units of measurement for distance
+  ///  - passengerAmt: an estimate of how full the light rail/tram was
   TravelEmissions.lightRailTram({
     required this.distance, 
     required this.distanceUnit,
@@ -136,7 +166,13 @@ class TravelEmissions extends EmissionFactor{
         super(category: EmissionCategory.travel,
           id: EmissionSubtypes().travelTypes['Light Rail/Tram'] ?? 'type not found');
   
-  /// API Reference: https://www.climatiq.io/data/activity/passenger_train-route_type_national_rail-fuel_source_na
+  // API Reference: https://www.climatiq.io/data/activity/passenger_train-route_type_national_rail-fuel_source_na
+  /// Creates an emission factor for train travel.
+  /// 
+  /// Parameters:
+  ///  - distance: the distance traveled
+  ///  - distanceUnit: the units of measurement for distance
+  ///  - passengerAmt: an estimate of how full the train was
   TravelEmissions.train({
     required this.distance, 
     required this.distanceUnit,
@@ -154,9 +190,16 @@ class TravelEmissions extends EmissionFactor{
         super(category: EmissionCategory.travel,
           id: EmissionSubtypes().travelTypes['Train'] ?? 'type not found');
   
-  /// API Reference: 
-  ///  - Board with car: https://www.climatiq.io/data/activity/passenger_ferry-route_type_car_passenger-fuel_source_na
-  ///  - Board on foot: https://www.climatiq.io/data/activity/passenger_ferry-route_type_car_passenger-fuel_source_na
+  // API Reference: 
+  //  - Board with car: https://www.climatiq.io/data/activity/passenger_ferry-route_type_car_passenger-fuel_source_na
+  //  - Board on foot: https://www.climatiq.io/data/activity/passenger_ferry-route_type_car_passenger-fuel_source_na
+  /// Creates an emission factor for ferry travel.
+  /// 
+  /// Parameters:
+  ///  - distance: the distance traveled
+  ///  - distanceUnit: the units of measurement for distance
+  ///  - passengerAmt: an estimate of how full the ferry was
+  ///  - onFoot: whether the user boarded the ferry on foot or with a car
   TravelEmissions.ferry({
     required this.distance, 
     required this.distanceUnit,

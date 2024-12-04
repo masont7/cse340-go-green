@@ -12,8 +12,7 @@ class FoodWasteEmissions extends WeightEmissionFactor {
   /// Parameters:
   ///  - weight: the weight of the emission factor
   ///  - weightUnit: the units of measurement for the weight
-  ///  - foodType: the type of food waste
-  ///  - composted: whether this waste was composted. Set to false if landfilled.
+  ///  - foodWasteType: the type of food waste
   FoodWasteEmissions({
     required super.weight, 
     required super.weightUnit,

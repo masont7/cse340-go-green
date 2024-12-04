@@ -2,9 +2,9 @@ import 'package:go_green/models/emission_data/emission_data_enums.dart';
 import 'package:go_green/models/emission_data/emission_subtypes.dart';
 import 'package:go_green/models/emission_factors/base_emission_factors/money_emission_factor.dart';
 
-/// Represents the emissions from household items and furniture
+/// Represents the emissions from furniture
 class FurnitureEmissions extends MoneyEmissionFactor {
-  /// The type of clothing
+  /// The type of furniture
   final String furnitureType;
 
   // API Reference: https://www.climatiq.io/data/activity/consumer_goods-type_household_furniture
@@ -13,6 +13,7 @@ class FurnitureEmissions extends MoneyEmissionFactor {
   /// Parameters:
   ///  - money: the amount of money spent
   ///  - moneyUnit: the type of currency for money
+  ///  - furnitureType: the type of furniture
   FurnitureEmissions({
     required super.money, 
     required super.moneyUnit,

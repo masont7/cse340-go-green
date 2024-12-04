@@ -21,6 +21,11 @@ class EmissionEstimate {
     if (!json.containsKey('co2e')) {
       throw ArgumentError('co2 estimate not found. json: \n$json');
     }
+
+    // Throws an error if the 'co2e_unit' key doesn't exist
+    if (!json.containsKey('co2e_unit')) {
+      throw ArgumentError('co2 unit of measurement not found. json: \n$json');
+    }
     
     return EmissionEstimate(
       co2: json['co2e'] as double,

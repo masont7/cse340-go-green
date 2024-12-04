@@ -12,7 +12,7 @@ class GeneralWasteEmissions extends WeightEmissionFactor {
   /// Parameters:
   ///  - weight: the weight of the emission factor
   ///  - weightUnit: the units of measurement for the weight
-  ///  - recycled: Whether the waste was recycled or composted. Set to false if landfilled.
+  ///  - wasteType: the type of waste
   GeneralWasteEmissions({
     required super.weight, 
     required super.weightUnit,

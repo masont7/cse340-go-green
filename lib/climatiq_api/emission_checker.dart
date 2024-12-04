@@ -13,6 +13,7 @@ import 'package:http/http.dart' as http;
 class EmissionChecker {
   /// The client that will call the web service
   final http.Client client;
+  /// The API Key for Climatiq
   static const String _apiKey = 'R58VCG52QD6GF27J7DFZR19BQM';
 
   /// Constructs an Emissions Checker.
@@ -27,7 +28,7 @@ class EmissionChecker {
   /// Parameters:
   ///  - factor: the type of emissions to parse. 
   /// 
-  /// Returns a future http response from the climatiq server
+  /// Returns a Response from the climatiq server
   Future<http.Response> _fetchEmissions(EmissionFactor factor) async {
     // Reference: https://pub.dev/packages/http
     return await client.post(
@@ -45,7 +46,7 @@ class EmissionChecker {
   /// Parameters: 
   ///  - responseBody: the data to be parsed
   /// 
-  /// Returns the emissions data as a double if the web service provides a valid response.
+  /// Returns the emissions data as an EmissionEstimate if the web service provides a valid response.
   /// Returns null if the web service provides an invalid response.
   EmissionEstimate? _parseEmissions(http.Response response) {
     final parsed = (jsonDecode(response.body) as Map<String, dynamic>);
@@ -74,6 +75,9 @@ class EmissionChecker {
           throw ArgumentError('Unknown error.\n$parsed');
       }
     } catch (e) {
+      // ignore: avoid_print
+      print('Invalid Emission Estimate: $e');
+      
       // Don't return an emission estimate if there's an error
       return null;
     }
