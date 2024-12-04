@@ -136,7 +136,6 @@ class TravelEmissions extends EmissionFactor{
           PassengerAmount.overloaded => 600,
         },
       }, 
-      // Uses the 2nd ID if this is an international flight
       travelType = isDomestic ? 'Domestic Flight' : 'International Flight',
       super(category: EmissionCategory.travel,
             id: EmissionSubtypes().travelTypes[isDomestic ? 'Domestic Flight' : 'International Flight'] ?? 'type not found');
