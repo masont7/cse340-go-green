@@ -13,25 +13,25 @@ class Entry {
   ///The user's notes for this entry
   final String notes;
 
-  /// The last time this Journal Entry was updated.
+  /// The last time this Entry was updated.
   /// Invariant: must be equal to or later than createdAt.
   final DateTime updatedAt;
 
-  /// The time this Journal Entry was created.
+  /// The time this Entry was created.
   /// Invariant: must be equal to or earlier than updatedAt.
   final DateTime createdAt;
 
   /// the date this entry is tracking emissions for
   final DateTime emissionsDate;
 
-  /// the types of emissions for this entry
+  /// the category of emissions for this entry
   @enumerated
   final EmissionCategory category;
 
   /// the subtype of this entry
   final String subtype;
 
-  /// co2 emission for this entry
+  /// co2 emissions for this entry
   final double co2;
 
   /// Constructs an Entry using all fields
@@ -46,8 +46,8 @@ class Entry {
     this.co2 = 0
   });
 
-  /// Constructs a new entry given a list of emission types.
-  /// Optionally pass in notes for the day and a date. If no date is passed, sets the date to now.
+  /// Constructs a new entry given an emission category.
+  /// Optionally pass in a date and notes for the entry. If no date is passed, sets the date to now.
   factory Entry.fromEmissions({required EmissionCategory category, notes = '', emissionsDate}) {
     final when = DateTime.now();
     return Entry (
