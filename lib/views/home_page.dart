@@ -71,7 +71,7 @@ class HomePageState extends State<HomePage> {
                       Icons.eco, 
                       size: 100, 
                       color: Color(0xFF6A994E),
-                      semanticLabel: 'Go Green Icon', // Semantic label added
+                      semanticLabel: 'Go Green Leaf Icon', // Semantic label added
                     ),
 
                     const SizedBox(height: 30),

@@ -1,6 +1,9 @@
+# Peer Audit
+
 **Audited by:** Eric Hoelscher
 **Time:** 12/3 11:30 am, **Place:** CSE 2 
 **Devices/Device Settings:** iPhone 13 pro, iPhone 15 pro simulator
+**Commit ID:** 7469a2e4083837574eb182c4c456c9cc372603c2
 
 **What the app does well:**
 - Very clean UI, button icons are intuitive
