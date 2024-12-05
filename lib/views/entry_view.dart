@@ -33,13 +33,14 @@ class EntryView extends StatefulWidget{
 
 class _EntryViewState extends State<EntryView>{
 
+  // menu entries for category 
   List<DropdownMenuEntry<EmissionCategory>> dropdownMenuEntries = EmissionCategory.values.map((category) {
     return DropdownMenuEntry<EmissionCategory>(value: category, label: category.toString(), 
     style: const ButtonStyle(foregroundColor: WidgetStatePropertyAll(Color(0xFF386641)), 
     textStyle: WidgetStatePropertyAll(TextStyle(fontSize: 14))));
   }).toList();
 
-
+  // menu entries for subtypes
   List<DropdownMenuEntry<String>> subtypeDropdownMenuEntries = [];
 
 
@@ -54,12 +55,10 @@ class _EntryViewState extends State<EntryView>{
   EmissionChecker checker = EmissionChecker();
 
   // for clothing
-  double? amount;
+  double? amount; // also for money, weight, distance
   MoneyUnit? moneyUnit;
   WeightUnit? weightUnit;
   String curEst = 'N/A';
-
-  // for electrical waste
 
   // for energy
   EnergyAmount? energyAmount;
@@ -69,9 +68,6 @@ class _EntryViewState extends State<EntryView>{
   int? passengers;
   PassengerAmount? passengerAmount;
   VehicleSize? size;
-  bool isDomestic = true;
-
-  EmissionCategory test = EmissionCategory.clothing;
 
   @override
   void initState() {
@@ -110,7 +106,7 @@ class _EntryViewState extends State<EntryView>{
                   child: Flexible(
                     child: Semantics(
                       child: const Text(
-                        'GoGreen\nTrack your emissions here', 
+                        'Track Here', 
                         style: TextStyle(
                           color: Color(0xFF386641), 
                           fontWeight: FontWeight.bold,
@@ -127,161 +123,224 @@ class _EntryViewState extends State<EntryView>{
         ),
         body:
           SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 10,),
-                // first row of the page, two drop down menus and one date selector
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    // Dropdown for category selection
-                    EmissionDropdownMenu(
-                      label: 'Emission Category:',
-                      semanticsLabel: 'Select Emission Category below.',
-                      initialSelection: category, 
-                      options: dropdownMenuEntries,
-                      onSelected: (EmissionCategory? value) {
-                        setState(() {
-                          category = value ?? category;
-                        });
-                        _updateSubtypeDropdown(category);
-                      },
-                    ),
-                    // Dropdown for subtype selection
-                    EmissionDropdownMenu(
-                      label: 'Emission Type:',
-                      semanticsLabel: 'Select Emission Type below.',
-                      onSelected: (String? value) {
-                        setState(() {
-                          subtype = value ?? subtype;
-                        });
-                      },
-                      initialSelection: subtype, 
-                      options: subtypeDropdownMenuEntries,
-                    ),
-                  ],
-                ),
-            
-                const SizedBox(height: 10),
-
-                // Date selector button
-                SizedBox(
-                  width: 150, // Set uniform width for dropdown and button
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 234, 224, 198), // Button background color
-                      foregroundColor: const Color(0xFF386641), // Text color
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(15.0), // Rounded corners matching dropdown
-                      ),
-                    ),
-                    onPressed: () async {
-                      DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: emissionsDate,
-                        firstDate: DateTime(2000),
-                        lastDate: DateTime.now(),
-                        builder: (BuildContext context, Widget? child) {
-                          return Theme(
-                            data: ThemeData.light().copyWith(
-                              primaryColor: const Color(0xFF6A994E), // Header background color (e.g., calendar title)
-                              colorScheme: const ColorScheme.light(
-                                primary: Color(0xFF6A994E), // Color for selected date and confirm button
-                                onPrimary: Color(0xFFF2E8CF), // Text color on the confirm button
-                                surface: Color(0xFFF2E8CF), // Background color of the calendar
-                                onSurface: Color(0xFF386641), // Color for the date text
-                              ),
-                              dialogBackgroundColor: const Color(0xFFF2E8CF), // Background color of the date picker dialog
-                            ),
-                            child: child!,
-                          );
+            child: Padding(
+              padding: const EdgeInsets.all(5),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 10,),
+                  // first row of the page, two drop down menus and one date selector
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // Dropdown for category selection
+                      EmissionDropdownMenu(
+                        label: 'Emission Category:',
+                        semanticsLabel: 'Select Emission Category below.',
+                        initialSelection: category, 
+                        options: dropdownMenuEntries,
+                        onSelected: (EmissionCategory? value) {
+                          setState(() {
+                            category = value ?? category;
+                          });
+                          _updateSubtypeDropdown(category);
                         },
-                      );
-                      if (pickedDate != null && pickedDate != emissionsDate) {
-                        setState(() {
-                          emissionsDate = pickedDate;
-                        });
-                      }
-                    },
-                    child: Text(
-                      'Choose Date: ${DateFormat.yMd().format(emissionsDate)}',
-                      style: const TextStyle(
-                        color: Color(0xFF386641),
-                        fontWeight: FontWeight.bold
                       ),
+                      // Dropdown for subtype selection
+                      EmissionDropdownMenu(
+                        label: 'Emission Type:',
+                        semanticsLabel: 'Select Emission Type below.',
+                        onSelected: (String? value) {
+                          setState(() {
+                            subtype = value ?? subtype;
+                          });
+                        },
+                        initialSelection: subtype, 
+                        options: subtypeDropdownMenuEntries,
+                      ),
+                    ],
+                  ),
+              
+                  const SizedBox(height: 10),
+              
+                  // Date selector button
+                  SizedBox(
+                    width: 150, // Set uniform width for dropdown and button
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 234, 224, 198), // Button background color
+                        foregroundColor: const Color(0xFF386641), // Text color
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0), // Rounded corners matching dropdown
+                        ),
+                      ),
+                      onPressed: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: emissionsDate,
+                          firstDate: DateTime(2000),
+                          lastDate: DateTime.now(),
+                          builder: (BuildContext context, Widget? child) {
+                            return Theme(
+                              data: ThemeData.light().copyWith(
+                                primaryColor: const Color(0xFF6A994E), // Header background color (e.g., calendar title)
+                                colorScheme: const ColorScheme.light(
+                                  primary: Color(0xFF6A994E), // Color for selected date and confirm button
+                                  onPrimary: Color(0xFFF2E8CF), // Text color on the confirm button
+                                  surface: Color(0xFFF2E8CF), // Background color of the calendar
+                                  onSurface: Color(0xFF386641), // Color for the date text
+                                ),
+                                dialogBackgroundColor: const Color(0xFFF2E8CF), // Background color of the date picker dialog
+                              ),
+                              child: child!,
+                            );
+                          },
+                        );
+                        if (pickedDate != null && pickedDate != emissionsDate) {
+                          setState(() {
+                            emissionsDate = pickedDate;
+                          });
+                        }
+                      },
+                      child: Text(
+                        'Choose Date: ${DateFormat.yMd().format(emissionsDate)}',
+                        style: const TextStyle(
+                          color: Color(0xFF386641),
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+                    ),
+                  ),
+                  
+                  const SizedBox(height: 10),
+              
+                  // selections for differenct categories
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      if (category == EmissionCategory.clothing)
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          children: [
+                            if (subtype == 'Used Clothing')
+                              _buildWeightInputSection()
+                            else
+                              _buildMoneyInputSection(),
+                          ],
+                        )
+                      else if (category == EmissionCategory.electricalWaste || category == EmissionCategory.foodWaste 
+                      || category == EmissionCategory.personalCareAndAccessories || category == EmissionCategory.generalWaste)
+                        _buildWeightInputSection()
+                      else if (category == EmissionCategory.energy)
+                        _buildEnergyInputSection()
+                      else if (category == EmissionCategory.food || category == EmissionCategory.furniture
+                      || category == EmissionCategory.personalCareAndAccessories)
+                        _buildMoneyInputSection()
+                      else if (category == EmissionCategory.travel)
+                        _buildTravelInputSection(subtype),
+                    ],
+                  ),
+                  
+                  // notes field
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Semantics(
+                        child: const Text(
+                          'Notes:', 
+                          style: TextStyle(color: Color(0xFF386641), fontSize: 16),
+                          semanticsLabel: 'Enter any additional notes below.',
+                        ),
+                      ),
+                      SizedBox(
+                        width: 250,
+                        height: 100,
+                        child: TextFormField(
+                          maxLines: 10,
+                          initialValue: notes,
+                          onChanged: (value) { setState(() => notes = value); },
+                          decoration: InputDecoration(
+                            labelStyle: TextStyle(color: Colors.grey.shade800),
+                            filled: true,
+                            fillColor: const Color.fromARGB(52, 193, 185, 102),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onTapOutside: (event) => FocusScope.of(context).unfocus()
+                        ),
+                      ),
+                    ],
+                  ),
+              
+                  const SizedBox(height: 30),
+              
+                  // estimate button
+                  SizedBox(
+                    width: 160,
+                    height: 80,
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 234, 224, 198), // Button background color
+                        foregroundColor: const Color(0xFF386641), // Text color
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0), // Rounded corners
+                        ),
+                      ),
+                      onPressed: () async {
+                        EmissionEstimate? estimate = await checker.getEmissions(_estimateEmission());
+                        if (estimate != null) {
+                          setState(() {
+                            curEst = estimate.toString();
+                            co2 = estimate.co2;
+                          });
+                        } else {
+                          setState(() {
+                            curEst = 'Please try again later';
+                          });
+                        }
+                      },
+                      child: const Padding(
+                        padding: EdgeInsets.all(10.0), // Padding for better appearance
+                        child: Text(
+                          'Estimate\nEmission',
+                          style: TextStyle(fontSize: 18),
+                          semanticsLabel: 'Estimate Emission',
+                        ),
+                      ),
+                    ),
+                  ),
+                
+                const SizedBox(height: 20),
+              
+                // Box to Display Estimated Emission
+                Container(
+                  padding: const EdgeInsets.all(15.0),
+                  decoration: BoxDecoration(
+                    color: const Color.fromARGB(255, 224, 214, 186), // Background color
+                    borderRadius: BorderRadius.circular(15.0), // Rounded corners
+                    border: Border.all(
+                      color: const Color(0xFF386641),
+                      width: 1.5,
+                    ),
+                  ),
+                  child: Text(
+                    'Estimate: $curEst',
+                    semanticsLabel: 'Estimate: $curEst',
+                    style: const TextStyle(
+                      fontSize: 22,
+                      color: Colors.black,
                     ),
                   ),
                 ),
                 
-                const SizedBox(height: 10),
-
-                // selections for differenct categories
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    if (category == EmissionCategory.clothing)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          if (subtype == 'Used Clothing')
-                            _buildWeightInputSection()
-                          else
-                            _buildMoneyInputSection(),
-                        ],
-                      )
-                    else if (category == EmissionCategory.electricalWaste || category == EmissionCategory.foodWaste 
-                    || category == EmissionCategory.personalCareAndAccessories || category == EmissionCategory.generalWaste)
-                      _buildWeightInputSection()
-                    else if (category == EmissionCategory.energy)
-                      _buildEnergyInputSection()
-                    else if (category == EmissionCategory.food || category == EmissionCategory.furniture
-                    || category == EmissionCategory.personalCareAndAccessories)
-                      _buildMoneyInputSection()
-                    else if (category == EmissionCategory.travel)
-                      _buildTravelInputSection(subtype),
-                  ],
-                ),
-                
-                // notes field
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Semantics(
-                      child: const Text(
-                        'Notes:', 
-                        style: TextStyle(color: Color(0xFF386641), fontSize: 16),
-                        semanticsLabel: 'Enter any additional notes below.',
-                      ),
-                    ),
-                    SizedBox(
-                      width: 300,
-                      height: 100,
-                      child: TextFormField(
-                        maxLines: 10,
-                        initialValue: notes,
-                        onChanged: (value) { setState(() => notes = value); },
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(color: Colors.grey.shade800),
-                          filled: true,
-                          fillColor: const Color.fromARGB(52, 193, 185, 102),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                        ),
-                        onTapOutside: (event) => FocusScope.of(context).unfocus()
-                      ),
-                    ),
-                  ],
-                ),
-            
-                const SizedBox(height: 30),
-            
-                // estimate button
+                const SizedBox(height: 20),
+              
+                // Save Button
                 SizedBox(
-                  width: 160,
-                  height: 80,
+                  width: 130,
+                  height: 70,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromARGB(255, 234, 224, 198), // Button background color
@@ -290,84 +349,24 @@ class _EntryViewState extends State<EntryView>{
                         borderRadius: BorderRadius.circular(15.0), // Rounded corners
                       ),
                     ),
-                    onPressed: () async {
-                      EmissionEstimate? estimate = await checker.getEmissions(_estimateEmission());
-                      if (estimate != null) {
-                        setState(() {
-                          curEst = estimate.toString();
-                          co2 = estimate.co2;
-                        });
-                      } else {
-                        setState(() {
-                          curEst = 'Please try again later';
-                        });
-                      }
+                    onPressed: () {
+                      _popback(context);
                     },
                     child: const Padding(
-                      padding: EdgeInsets.all(10.0), // Padding for better appearance
+                      padding: EdgeInsets.all(0), // Padding for better appearance
                       child: Text(
-                        'Estimate\nEmission',
-                        style: TextStyle(fontSize: 19),
-                        semanticsLabel: 'Estimate\nEmission',
+                        'Save',
+                        semanticsLabel: 'Save',
+                        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
                 ),
-              
-              const SizedBox(height: 20),
-            
-              // Box to Display Estimated Emission
-              Container(
-                padding: const EdgeInsets.all(15.0),
-                decoration: BoxDecoration(
-                  color: const Color.fromARGB(255, 224, 214, 186), // Background color
-                  borderRadius: BorderRadius.circular(15.0), // Rounded corners
-                  border: Border.all(
-                    color: const Color(0xFF386641),
-                    width: 1.5,
-                  ),
-                ),
-                child: Text(
-                  'Estimate: $curEst',
-                  semanticsLabel: 'Estimate: $curEst',
-                  style: const TextStyle(
-                    fontSize: 22,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
-              
-              const SizedBox(height: 20),
-            
-              // Save Button
-              SizedBox(
-                width: 200,
-                height: 70,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 234, 224, 198), // Button background color
-                    foregroundColor: const Color(0xFF386641), // Text color
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0), // Rounded corners
-                    ),
-                  ),
-                  onPressed: () {
-                    _popback(context);
-                  },
-                  child: const Padding(
-                    padding: EdgeInsets.all(10.0), // Padding for better appearance
-                    child: Text(
-                      'Save',
-                      semanticsLabel: 'Save',
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ),
               ],
+                        ),
             ),
-          ),
         ),
+      ),
     );
   }
 
@@ -417,21 +416,27 @@ class _EntryViewState extends State<EntryView>{
           case 'Hybrid Car':
             return TravelEmissions.hybridCar(distance: amount ?? 0, distanceUnit: distanceUnit ?? DistanceUnit.km);
           case 'Bus':
-            return TravelEmissions.bus(distance: amount ?? 0, distanceUnit: distanceUnit ?? DistanceUnit.km, passengerAmt: passengerAmount ?? PassengerAmount.average);
+            return TravelEmissions.bus(distance: amount ?? 0, distanceUnit: distanceUnit ?? DistanceUnit.km, 
+            passengerAmt: passengerAmount ?? PassengerAmount.average);
           case 'Light Rail/Tram':
-            return TravelEmissions.lightRailTram(distance: amount ?? 0, distanceUnit: distanceUnit ?? DistanceUnit.km, passengerAmt: passengerAmount ?? PassengerAmount.average);
+            return TravelEmissions.lightRailTram(distance: amount ?? 0, distanceUnit: distanceUnit ?? DistanceUnit.km, 
+            passengerAmt: passengerAmount ?? PassengerAmount.average);
           case 'Train':
-            return TravelEmissions.train(distance: amount ?? 0, distanceUnit: distanceUnit ?? DistanceUnit.km , passengerAmt: passengerAmount ?? PassengerAmount.average);
+            return TravelEmissions.train(distance: amount ?? 0, distanceUnit: distanceUnit ?? DistanceUnit.km, 
+            passengerAmt: passengerAmount ?? PassengerAmount.average);
           case 'Ferry: On Foot':
-            return TravelEmissions.ferry(distance: amount ?? 0, distanceUnit: distanceUnit ?? DistanceUnit.km, passengerAmt: passengerAmount ?? PassengerAmount.average, onFoot: true);
+            return TravelEmissions.ferry(distance: amount ?? 0, distanceUnit: distanceUnit ?? DistanceUnit.km, 
+            passengerAmt: passengerAmount ?? PassengerAmount.average, onFoot: true);
           case 'Ferry: With a Car':
-            return TravelEmissions.ferry(distance: amount ?? 0, distanceUnit: distanceUnit ?? DistanceUnit.km, passengerAmt: passengerAmount ?? PassengerAmount.average, onFoot: false);
+            return TravelEmissions.ferry(distance: amount ?? 0, distanceUnit: distanceUnit ?? DistanceUnit.km, 
+            passengerAmt: passengerAmount ?? PassengerAmount.average, onFoot: false);
           case 'International Flight':
-            return TravelEmissions.flight(distance: amount ?? 0, distanceUnit: distanceUnit ?? DistanceUnit.km, size: size ?? VehicleSize.medium, 
+            return TravelEmissions.flight(distance: amount ?? 0, distanceUnit: distanceUnit ?? DistanceUnit.km, 
+            size: size ?? VehicleSize.medium, 
               passengerAmt: passengerAmount ?? PassengerAmount.average, isDomestic: false);
           case 'Domestic Flight':
-            return TravelEmissions.flight(distance: amount ?? 0, distanceUnit: distanceUnit ?? DistanceUnit.km, size: size ?? VehicleSize.medium, 
-              passengerAmt: passengerAmount ?? PassengerAmount.average, isDomestic: true);
+            return TravelEmissions.flight(distance: amount ?? 0, distanceUnit: distanceUnit ?? DistanceUnit.km, 
+            size: size ?? VehicleSize.medium, passengerAmt: passengerAmount ?? PassengerAmount.average, isDomestic: true);
         }
 
       // Add other category cases for emission estimation here
@@ -518,6 +523,7 @@ class _EntryViewState extends State<EntryView>{
 
   // Weight Input Section
   Widget _buildWeightInputSection() {
+    print('building weight input');
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0), // Increased vertical padding
       child: Column(

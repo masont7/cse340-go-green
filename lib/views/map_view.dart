@@ -89,74 +89,74 @@ Widget build(BuildContext context) {
                 } else {
                   final position = snapshot.data!;
                  return SingleChildScrollView(
-  child: Column(
-    children: [
-      SizedBox(
-        height: 400, // Fixed height for the map
-        child: Semantics(
-          label: 'Map showing recycling centers and second-hand stores near you.',
-          child: FlutterMap(
-            options: MapOptions(
-              initialCenter: LatLng(position.latitude, position.longitude),
-              initialZoom: 15,
-              maxZoom: 19,
-              minZoom: 5,
-            ),
-            children: [
-              mapBoxOverlay(),
-              // The location marker layer.
-              markerWithClusters(context),
-              // The current location layer.
-              CurrentLocationLayer(
-                positionStream: _positionStream,
-              ),
-              mapBoxAttribution(),
-            ],
-          ),
-        ),
-      ),
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 400, // Fixed height for the map
+                    child: Semantics(
+                      label: 'Map showing recycling centers and second-hand stores near you.',
+                      child: FlutterMap(
+                        options: MapOptions(
+                          initialCenter: LatLng(position.latitude, position.longitude),
+                          initialZoom: 15,
+                          maxZoom: 19,
+                          minZoom: 5,
+                        ),
+                        children: [
+                          mapBoxOverlay(),
+                          // The location marker layer.
+                          markerWithClusters(context),
+                          // The current location layer.
+                          CurrentLocationLayer(
+                            positionStream: _positionStream,
+                          ),
+                          mapBoxAttribution(),
+                        ],
+                      ),
+                    ),
+                  ),
                         const SizedBox(height: 20),
                        Center(
-  child: Column(
-    mainAxisSize: MainAxisSize.min, // Adjusts to the size of its children
-    children: [
-      const Text(
-        'Unsure of how to dispose of something?',
-        textAlign: TextAlign.center, // Centers the text within its box
-        style: TextStyle(
-          fontSize: 16,
-          color: Color(0xFF386641),
-        ),
-      ),
-      const SizedBox(height: 16), // Adds space between text and button
-      Semantics(
-              label: 'Click here for more information on how to dispose of things.',
-              button: true, // Makes the button accessible as a button
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF386641), // Button color
-                  padding: const EdgeInsets.all(16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // Adjusts to the size of its children
+            children: [
+              const Text(
+                'Unsure of how to dispose of something?',
+                textAlign: TextAlign.center, // Centers the text within its box
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Color(0xFF386641),
                 ),
-        onPressed: () async {
-          const url = 'https://seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/a-z';
-          if (await canLaunchUrl(Uri.parse(url))) {
-            await launchUrl(Uri.parse(url));
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Could not open the link")),
-            );
-          }
-        },
-        child: const Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.search, color: Colors.white), // Search icon
-            SizedBox(width: 8), // Space between icon and text
-            Text(
-              'Click here',
-              style: TextStyle(
-                fontSize: 15,
-                color: Colors.white,
+              ),
+          const SizedBox(height: 16), // Adds space between text and button
+          Semantics(
+                  label: 'Click here for more information on how to dispose of things.',
+                  button: true, // Makes the button accessible as a button
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF386641), // Button color
+                      padding: const EdgeInsets.all(16),
+                    ),
+            onPressed: () async {
+              const url = 'https://seattle.gov/utilities/your-services/collection-and-disposal/where-does-it-go#/a-z';
+              if (await canLaunchUrl(Uri.parse(url))) {
+                await launchUrl(Uri.parse(url));
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Could not open the link")),
+                );
+              }
+            },
+            child: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.search, color: Colors.white), // Search icon
+                SizedBox(width: 8), // Space between icon and text
+                Text(
+                  'Click here',
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: Colors.white,
               ),
             ),
           ],

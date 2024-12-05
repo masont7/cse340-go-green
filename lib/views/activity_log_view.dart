@@ -15,7 +15,7 @@ class ActivityLogView extends StatefulWidget {
 }
 
 class ActivityLogViewState extends State<ActivityLogView> {
-  String _sortOption = 'Most Recent';
+  String _sortOption = 'Most Recent'; // default sorting
   int _currentIndex = 1;
 
   @override
@@ -71,39 +71,38 @@ class ActivityLogViewState extends State<ActivityLogView> {
             builder: (context, activityProvider, child) {
               List<Entry> entries = activityProvider.activityHistory.entries;
 
-              // Sorting entries based on selected option
-              if (_sortOption == 'Most Recent') {
-                entries.sort((a, b) => b.emissionsDate.compareTo(a.emissionsDate));
-              } else if (_sortOption == 'Least Recent') {
-                entries.sort((a, b) => a.emissionsDate.compareTo(b.emissionsDate));
-              } else if (_sortOption == 'Most CO2') {
-                entries.sort((a, b) => b.co2.compareTo(a.co2));
-              } else if (_sortOption == 'Least CO2') {
-                entries.sort((a, b) => a.co2.compareTo(b.co2));
-              }
+                          // Sorting entries based on selected option
+                          if (_sortOption == 'Most Recent') {
+                            entries.sort((a, b) => b.emissionsDate.compareTo(a.emissionsDate));
+                          } else if (_sortOption == 'Least Recent') {
+                            entries.sort((a, b) => a.emissionsDate.compareTo(b.emissionsDate));
+                          } else if (_sortOption == 'Most CO2') {
+                            entries.sort((a, b) => b.co2.compareTo(a.co2));
+                          } else if (_sortOption == 'Least CO2') {
+                            entries.sort((a, b) => a.co2.compareTo(b.co2));
+                          }
 
-              return ListView.builder(
-                itemCount: entries.length,
-                itemBuilder: (context, index) {
-                  return _createListElementForEntry(context, entries[index]);
-                },
-              );
-            },
-          ),
-        ),
-      ),
-    ],
-  ),
-),
-
-            
+                          // all the entries
+                          return ListView.builder(
+                            itemCount: entries.length,
+                            itemBuilder: (context, index) {
+                              return _createListElementForEntry(context, entries[index]);
+                            },
+                          );
+                        },
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
       // The bottom navigation bar of the Scaffold.
     bottomNavigationBar: Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFF2E8CF),
+        color: const Color(0xFFF2E8CF), //background color
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.1),
@@ -121,9 +120,9 @@ class ActivityLogViewState extends State<ActivityLogView> {
           });
 
           if (index == 2) {
-            Navigator.pushNamed(context, '/location');
+            Navigator.pushNamed(context, '/location'); // to map
           } else if (index == 0) {
-            Navigator.pushNamed(context, '/');
+            Navigator.pushNamed(context, '/'); // to home page
           }
         },
         backgroundColor: const Color(0xFFF2E8CF),

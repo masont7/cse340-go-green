@@ -2,6 +2,8 @@ PODS:
   - FlutterMacOS (1.0.0)
   - geolocator_apple (1.2.0):
     - FlutterMacOS
+  - isar_flutter_libs (1.0.0):
+    - FlutterMacOS
   - maps_launcher (0.0.1):
     - FlutterMacOS
   - path_provider_foundation (0.0.1):
@@ -13,6 +15,7 @@ PODS:
 DEPENDENCIES:
   - FlutterMacOS (from `Flutter/ephemeral`)
   - geolocator_apple (from `Flutter/ephemeral/.symlinks/plugins/geolocator_apple/macos`)
+  - isar_flutter_libs (from `Flutter/ephemeral/.symlinks/plugins/isar_flutter_libs/macos`)
   - maps_launcher (from `Flutter/ephemeral/.symlinks/plugins/maps_launcher/macos`)
   - path_provider_foundation (from `Flutter/ephemeral/.symlinks/plugins/path_provider_foundation/darwin`)
   - url_launcher_macos (from `Flutter/ephemeral/.symlinks/plugins/url_launcher_macos/macos`)
@@ -22,6 +25,8 @@ EXTERNAL SOURCES:
     :path: Flutter/ephemeral
   geolocator_apple:
     :path: Flutter/ephemeral/.symlinks/plugins/geolocator_apple/macos
+  isar_flutter_libs:
+    :path: Flutter/ephemeral/.symlinks/plugins/isar_flutter_libs/macos
   maps_launcher:
     :path: Flutter/ephemeral/.symlinks/plugins/maps_launcher/macos
   path_provider_foundation:
@@ -32,6 +37,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FlutterMacOS: 8f6f14fa908a6fb3fba0cd85dbd81ec4b251fb24
   geolocator_apple: 72a78ae3f3e4ec0db62117bd93e34523f5011d58
+  isar_flutter_libs: 43385c99864c168fadba7c9adeddc5d38838ca6a
   maps_launcher: f1a606d040d8938430ddb7ca836a0abd2c7a1d34
   path_provider_foundation: 2b6b4c569c0fb62ec74538f866245ac84301af46
   url_launcher_macos: c82c93949963e55b228a30115bd219499a6fe404
