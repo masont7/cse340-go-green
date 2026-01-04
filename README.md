@@ -1,4 +1,6 @@
 # GoGreen
+Final project for CSE 340 at the University of Washington. Authors: Mason Tepper, Avni Rao, Mngwei (Michael) Li.
+
 GoGreen is an app that allows users to track their carbon emissions based on activities and purchases they make during a day. It also displays recycling centers and second hand store locations in the Seattle Area which can be used to dispose of goods in a more sustainable fashion. 
 
 NOTE FOR GRADERS: We used the DropdownMenu widget to display emission categories and types in our Entry View. We tried adding semantics to this widget, but it was buggy. We spoke with Ben about this and learned that it's an issue with flutter. We tried updating our flutter versions but it still didn't work, so we're documenting it in here. 
